@@ -25,7 +25,7 @@ https://vibe-homelab.github.io
 | document-insight-api | 문서 분석/처리 API | 📋 Planned |
 | search-insight-api | 시맨틱 검색/RAG API | 📋 Planned |
 | agent-hub | AI 에이전트 오케스트레이션 | 📋 Planned |
-| homelab-dashboard | 통합 모니터링 대시보드 | 📋 Planned |
+| [homelab-dashboard](https://github.com/vibe-homelab/homelab-dashboard) | 통합 모니터링 대시보드 | ✅ Active |
 
 ## 💡 Philosophy
 
