@@ -39,10 +39,11 @@
                 <div class="service-card">
                     <div class="service-icon">👁️</div>
                     <h3>Vision Insight API</h3>
-                    <p>이미지 및 영상 분석을 위한 AI API 서비스. 객체 감지, OCR, 장면 분석 등을 제공합니다.</p>
+                    <p>MLX 가속 이미지 생성 및 비전 분석 API. FLUX로 이미지 생성, Moondream2/Qwen2.5-VL로 이미지 분석을 제공합니다.</p>
                     <div class="service-tags">
-                        <span class="tag">Computer Vision</span>
-                        <span class="tag">REST API</span>
+                        <span class="tag">MLX</span>
+                        <span class="tag">FLUX</span>
+                        <span class="tag">OpenAI Compatible</span>
                     </div>
                     <a href="https://github.com/vibe-homelab/vision-insight-api" class="service-link">View Project →</a>
                 </div>
@@ -249,20 +250,21 @@ curl -X POST http://localhost:8000/analyze \
                 <h3>🖥️ Recommended Hardware</h3>
                 <div class="req-grid">
                     <div class="req-item">
-                        <strong>Minimum</strong>
+                        <strong>Apple Silicon (MLX)</strong>
                         <ul>
-                            <li>CPU: 4 cores</li>
-                            <li>RAM: 8GB</li>
-                            <li>Storage: 50GB SSD</li>
+                            <li>Mac Mini M4 / MacBook Pro</li>
+                            <li>Unified Memory: 32GB+</li>
+                            <li>Storage: 200GB NVMe</li>
+                            <li>macOS 13.0+</li>
                         </ul>
                     </div>
                     <div class="req-item">
-                        <strong>Recommended</strong>
+                        <strong>NVIDIA GPU</strong>
                         <ul>
                             <li>CPU: 8+ cores</li>
                             <li>RAM: 32GB</li>
                             <li>Storage: 200GB NVMe</li>
-                            <li>GPU: NVIDIA RTX 3060+</li>
+                            <li>GPU: RTX 3060+ (12GB VRAM)</li>
                         </ul>
                     </div>
                 </div>
