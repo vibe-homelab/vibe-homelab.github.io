@@ -59,6 +59,13 @@ make install
 curl http://localhost:8000/healthz
 ```
 
+## 🧱 Full Stack (Dashboard + Gateways)
+
+미리 빌드된 Docker 이미지를 사용해 **Dashboard + Vision/Voice Gateway**를 한 번에 실행할 수 있습니다.
+
+- Compose: `stack/docker-compose.yml`
+- Guide: `stack/README.md`
+
 ## 🖥️ Hardware Requirements
 
 **Minimum:**

@@ -1,0 +1,115 @@
+services:
+  dashboard-backend:
+    image: ghcr.io/vibe-homelab/homelab-dashboard-backend:latest
+    container_name: vibe-dashboard-backend
+    ports:
+      - "4010:4010"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4010/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  dashboard-frontend:
+    image: ghcr.io/vibe-homelab/homelab-dashboard-frontend:latest
+    container_name: vibe-dashboard-frontend
+    ports:
+      - "4000:80"
+    depends_on:
+      dashboard-backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  vision-gateway:
+    image: ghcr.io/vibe-homelab/vision-insight-api:latest
+    container_name: vibe-vision-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - WORKER_MANAGER_HOST=host.docker.internal
+      - WORKER_MANAGER_PORT=8100
+      # Optional:
+      # - GATEWAY_API_KEY=change-me
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      vision-manager-check:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # Ensures the Vision Worker Manager is running on host before starting the gateway.
+  vision-manager-check:
+    image: curlimages/curl:latest
+    command: >
+      sh -c "
+        echo 'Checking Vision Worker Manager on host...' &&
+        for i in 1 2 3 4 5; do
+          if curl -sf http://host.docker.internal:8100/health; then
+            echo 'Vision Worker Manager is running!'
+            exit 0
+          fi
+          echo 'Waiting for Vision Worker Manager...'
+          sleep 2
+        done
+        echo 'ERROR: Vision Worker Manager not running on host!'
+        echo 'See: https://github.com/vibe-homelab/vision-insight-api'
+        exit 1
+      "
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: "no"
+
+  voice-gateway:
+    image: ghcr.io/vibe-homelab/voice-insight-api:latest
+    container_name: vibe-voice-gateway
+    ports:
+      - "8200:8200"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - WORKER_MANAGER_HOST=host.docker.internal
+      - WORKER_MANAGER_PORT=8210
+      - WORKER_HOST=host.docker.internal
+      # Optional:
+      # - GATEWAY_API_KEY=change-me
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      voice-manager-check:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8200/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Ensures the Voice Worker Manager is running on host before starting the gateway.
+  voice-manager-check:
+    image: curlimages/curl:latest
+    command: >
+      sh -c "
+        echo 'Checking Voice Worker Manager on host...' &&
+        for i in 1 2 3 4 5; do
+          if curl -sf http://host.docker.internal:8210/health; then
+            echo 'Voice Worker Manager is running!'
+            exit 0
+          fi
+          echo 'Waiting for Voice Worker Manager...'
+          sleep 2
+        done
+        echo 'ERROR: Voice Worker Manager not running on host!'
+        echo 'See: https://github.com/vibe-homelab/voice-insight-api'
+        exit 1
+      "
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: "no"
