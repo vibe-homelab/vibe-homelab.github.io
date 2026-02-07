@@ -219,14 +219,23 @@ nvidia-smi</code></pre>
                     </div>
                 </div>
                 <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>서비스 배포</h3>
-                        <pre><code># Vision (이미지 생성/분석)
-git clone https://github.com/vibe-homelab/vision-insight-api
-cd vision-insight-api
-make install
+	                    <div class="step-number">2</div>
+	                    <div class="step-content">
+	                        <h3>서비스 배포</h3>
+	                        <pre><code># Option A) Full Stack (Dashboard + Gateways)
+# Prerequisite: Vision/Voice Worker Managers are running on host
+# (see https://github.com/vibe-homelab/vibe-homelab.github.io/tree/main/stack)
+git clone https://github.com/vibe-homelab/vibe-homelab.github.io
+cd vibe-homelab.github.io
+docker compose -f stack/docker-compose.yml up -d
 cd ..
+
+# Option B) Run services individually
+# Vision (이미지 생성/분석)
+	git clone https://github.com/vibe-homelab/vision-insight-api
+	cd vision-insight-api
+	make install
+	cd ..
 
 # Voice (STT/TTS)
 git clone https://github.com/vibe-homelab/voice-insight-api
