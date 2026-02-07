@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  site-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Basic checks
+        run: |
+          test -f index.html
+          test -f style.css
+
+      - name: Quick-start sanity checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          html = Path("index.html").read_text(encoding="utf-8")
+
+          # Ensure CSS is referenced.
+          assert 'href="style.css"' in html, "index.html must reference style.css"
+
+          # Ensure the guide uses real endpoints.
+          assert "/healthz" in html, "Getting Started should mention /healthz"
+          assert "/v1/vision/analyze" in html, "Getting Started should use /v1/vision/analyze"
+          assert "localhost:8200" in html, "Getting Started should mention Voice port 8200"
+          print("ok")
+          PY
+

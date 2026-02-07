@@ -50,13 +50,13 @@ git clone https://github.com/vibe-homelab/vision-insight-api
 cd vision-insight-api
 
 # 2. 환경 설정
-cp .env.example .env
+# (선택) config.yaml에서 모델/메모리/포트를 조정할 수 있습니다.
 
 # 3. 실행
-docker compose up -d
+make install
 
 # 4. 확인
-curl http://localhost:8000/health
+curl http://localhost:8000/healthz
 ```
 
 ## 🖥️ Hardware Requirements

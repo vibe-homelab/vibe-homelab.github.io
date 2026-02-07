@@ -222,14 +222,18 @@ nvidia-smi</code></pre>
                     <div class="step-number">2</div>
                     <div class="step-content">
                         <h3>서비스 배포</h3>
-                        <pre><code># 원하는 서비스 클론
+                        <pre><code># Vision (이미지 생성/분석)
 git clone https://github.com/vibe-homelab/vision-insight-api
+cd vision-insight-api
+make install
+cd ..
 
-# 환경 설정
-cp .env.example .env
-
-# 실행
-docker compose up -d</code></pre>
+# Voice (STT/TTS)
+git clone https://github.com/vibe-homelab/voice-insight-api
+cd voice-insight-api
+make install-worker
+make service-install
+make start-all</code></pre>
                     </div>
                 </div>
                 <div class="guide-step">
@@ -237,12 +241,18 @@ docker compose up -d</code></pre>
                     <div class="step-content">
                         <h3>API 사용</h3>
                         <pre><code># Health Check
-curl http://localhost:8000/health
+curl http://localhost:8000/healthz   # Vision
+curl http://localhost:8200/healthz   # Voice
 
-# API 호출 예시
-curl -X POST http://localhost:8000/analyze \
+# Vision: 구조화 이미지 분석
+curl -X POST http://localhost:8000/v1/vision/analyze \
   -H "Content-Type: application/json" \
-  -d '{"image_url": "..."}'</code></pre>
+  -d '{"image":"data:image/png;base64,...","task":"caption"}'
+
+# Voice: STT (OpenAI compatible)
+curl -X POST http://localhost:8200/v1/audio/transcriptions \
+  -F "file=@audio.wav" \
+  -F "model=stt-fast"</code></pre>
                     </div>
                 </div>
             </div>
