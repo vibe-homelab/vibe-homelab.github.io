@@ -66,6 +66,16 @@ curl http://localhost:8000/healthz
 - Compose: `stack/docker-compose.yml`
 - Guide: `stack/README.md`
 
+```bash
+git clone https://github.com/vibe-homelab/vibe-homelab.github.io
+cd vibe-homelab.github.io
+
+# Prerequisite: Vision/Voice Worker Managers are running on host (see stack/README.md)
+docker compose -f stack/docker-compose.yml up -d
+
+open http://localhost:4000
+```
+
 ## 🖥️ Hardware Requirements
 
 **Minimum:**

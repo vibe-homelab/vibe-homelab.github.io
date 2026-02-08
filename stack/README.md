@@ -1,6 +1,6 @@
 # Vibe Homelab Stack (Docker Compose)
 
-이 폴더는 **대시보드 + Vision/Voice Gateway**를 Docker 이미지로 빠르게 띄우기 위한 compose 파일을 제공합니다.
+이 폴더는 **대시보드 + Vision/Voice Gateway**를 **사전 빌드된 Docker 이미지(GHCR)**로 빠르게 띄우기 위한 compose 파일을 제공합니다.
 
 주의: Vision/Voice는 MLX 워커를 위해 **Host(로컬 머신)에서 Worker Manager가 먼저 실행**되어야 합니다.
 
@@ -31,11 +31,19 @@ make service-start
 curl http://localhost:8210/health
 ```
 
+## (선택) API Key 인증
+
+Vision/Voice Gateway에서 `/v1/*` 인증을 켠 경우, Dashboard에도 같은 키를 설정해야 합니다.
+
+- Vision/Voice: `GATEWAY_API_KEY` 또는 각 서비스 `config.yaml`의 `gateway.api_key`
+- Dashboard: `homelab-dashboard/backend/config.yaml`의 `services.<id>.api_key`
+
 ## 2) Stack 실행
 
 `vibe-homelab.github.io` 레포 루트에서:
 
 ```bash
+docker compose -f stack/docker-compose.yml pull
 docker compose -f stack/docker-compose.yml up -d
 ```
 
@@ -54,3 +62,10 @@ curl http://localhost:4010/healthz  # Dashboard Backend
 ```bash
 docker compose -f stack/docker-compose.yml down
 ```
+
+## Troubleshooting
+
+| 증상 | 원인 | 해결 |
+|---|---|---|
+| Gateway 컨테이너가 시작되지 않음 | Host Worker Manager 미기동 | Vision: `curl http://localhost:8100/health`, Voice: `curl http://localhost:8210/health` |
+| `host.docker.internal` 연결 실패(리눅스 등) | Docker/OS 차이 | compose의 `WORKER_MANAGER_HOST`/Dashboard 설정을 호스트 IP로 변경 |
