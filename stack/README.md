@@ -47,6 +47,9 @@ docker compose -f stack/docker-compose.yml pull
 docker compose -f stack/docker-compose.yml up -d
 ```
 
+> 만약 `pull` 단계에서 이미지가 아직 없다는 에러가 난다면,
+> `pull`을 생략하고(또는 잠시 후 재시도) 개별 레포에서 로컬 빌드로 실행할 수 있습니다.
+
 ## 3) 접속/확인
 
 ```bash
