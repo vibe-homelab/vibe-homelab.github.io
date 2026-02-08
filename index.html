@@ -250,16 +250,16 @@ make start-all</code></pre>
                     <div class="step-content">
                         <h3>API 사용</h3>
                         <pre><code># Health Check
-curl http://localhost:8000/healthz   # Vision
-curl http://localhost:8200/healthz   # Voice
-
-# Dashboard
-open http://localhost:4000
-
-# Vision: 구조화 이미지 분석
-curl -X POST http://localhost:8000/v1/vision/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"image":"data:image/png;base64,...","task":"caption"}'
+	curl http://localhost:8000/healthz   # Vision
+	curl http://localhost:8200/healthz   # Voice
+	
+	# Dashboard
+	# http://localhost:4000
+	
+	# Vision: 구조화 이미지 분석
+	curl -X POST http://localhost:8000/v1/vision/analyze \
+	  -H "Content-Type: application/json" \
+	  -d '{"image":"data:image/png;base64,...","task":"caption"}'
 
 # Voice: STT (OpenAI compatible)
 curl -X POST http://localhost:8200/v1/audio/transcriptions \

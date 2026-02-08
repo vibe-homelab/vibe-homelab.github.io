@@ -53,7 +53,7 @@ docker compose -f stack/docker-compose.yml up -d
 ## 3) 접속/확인
 
 ```bash
-open http://localhost:4000
+# Dashboard UI: http://localhost:4000
 
 curl http://localhost:8000/healthz  # Vision Gateway
 curl http://localhost:8200/healthz  # Voice Gateway

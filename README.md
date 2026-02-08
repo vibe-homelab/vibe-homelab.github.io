@@ -73,7 +73,7 @@ cd vibe-homelab.github.io
 # Prerequisite: Vision/Voice Worker Managers are running on host (see stack/README.md)
 docker compose -f stack/docker-compose.yml up -d
 
-open http://localhost:4000
+# Dashboard UI: http://localhost:4000
 ```
 
 ## 🖥️ Hardware Requirements
