@@ -129,6 +129,60 @@ services:
           memory: 512M
     restart: unless-stopped
 
+  language-gateway:
+    image: ghcr.io/vibe-homelab/language-insight-api:latest
+    container_name: vibe-language-gateway
+    ports:
+      - "8400:8400"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - WORKER_MANAGER_HOST=host.docker.internal
+      - WORKER_MANAGER_PORT=8410
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      language-manager-check:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8400/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    restart: unless-stopped
+
+  language-manager-check:
+    image: curlimages/curl:latest
+    command: >
+      sh -c "
+        echo 'Checking Language Worker Manager on host...' &&
+        for i in 1 2 3 4 5; do
+          if curl -sf http://host.docker.internal:8410/health; then
+            echo 'Language Worker Manager is running!'
+            exit 0
+          fi
+          echo 'Waiting for Language Worker Manager...'
+          sleep 2
+        done
+        echo 'ERROR: Language Worker Manager not running on host!'
+        echo 'See: https://github.com/vibe-homelab/language-insight-api'
+        exit 1
+      "
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: "no"
+
   # Ensures the Voice Worker Manager is running on host before starting the gateway.
   voice-manager-check:
     image: curlimages/curl:latest

@@ -65,6 +65,21 @@
                     <a href="https://github.com/vibe-homelab/voice-insight-api" class="service-link">View Project →</a>
                 </div>
 
+                <div class="service-card">
+                    <div class="service-icon">🧠</div>
+                    <h3>Language Insight API</h3>
+                    <p>MLX 가속 로컬 LLM API 서비스. Qwen3.5 MoE (35B-A3B) 기반 OpenAI 호환 Chat Completions, Embeddings, Function Calling을 제공합니다.</p>
+                    <div class="service-tags">
+                        <span class="tag">Qwen3.5</span>
+                        <span class="tag">vllm-mlx</span>
+                        <span class="tag">Embeddings</span>
+                        <span class="tag">Function Calling</span>
+                        <span class="tag">MLX</span>
+                        <span class="tag">OpenAI Compatible</span>
+                    </div>
+                    <a href="https://github.com/vibe-homelab/language-insight-api" class="service-link">View Project →</a>
+                </div>
+
                 <div class="service-card planned">
                     <div class="service-icon">📄</div>
                     <h3>Document Insight API</h3>
@@ -160,6 +175,7 @@
                             <li>✅ Organization 설립 및 GitHub Pages 구축</li>
                             <li>✅ Vision Insight API 개발</li>
                             <li>✅ Voice Insight API 개발</li>
+                            <li>✅ Language Insight API 개발</li>
                             <li>📋 공통 인프라 템플릿 구성</li>
                         </ul>
                     </div>
@@ -228,7 +244,7 @@ nvidia-smi</code></pre>
 	                    <div class="step-content">
 	                        <h3>서비스 배포</h3>
 	                        <pre><code># Option A) Full Stack (Dashboard + Gateways)
-# Prerequisite: Vision/Voice Worker Managers are running on host
+# Prerequisite: Vision/Voice/Language Worker Managers are running on host
 # (see https://github.com/vibe-homelab/vibe-homelab.github.io/tree/main/stack)
 git clone https://github.com/vibe-homelab/vibe-homelab.github.io
 cd vibe-homelab.github.io
@@ -257,6 +273,7 @@ make start-all</code></pre>
                         <pre><code># Health Check
 	curl http://localhost:8000/healthz   # Vision
 	curl http://localhost:8200/healthz   # Voice
+	curl http://localhost:8400/healthz   # Language
 	
 	# Dashboard
 	# http://localhost:4000
@@ -269,7 +286,12 @@ make start-all</code></pre>
 # Voice: STT (OpenAI compatible)
 curl -X POST http://localhost:8200/v1/audio/transcriptions \
   -F "file=@audio.wav" \
-  -F "model=stt-fast"</code></pre>
+  -F "model=stt-fast"
+
+# Language: Chat Completions (OpenAI compatible)
+curl -X POST http://localhost:8400/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"llm-fast","messages":[{"role":"user","content":"Hello!"}]}'</code></pre>
                     </div>
                 </div>
             </div>
